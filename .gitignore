@@ -1,0 +1,11 @@
+# OSX files
+.DS_Store
+
+# Local configuration
+/local.properties
+
+# Android Studio
+*.iml
+.gradle
+/.idea
+/build
