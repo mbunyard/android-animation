@@ -18,7 +18,7 @@ public class FrameByFrameAnimationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate XML layout.
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_frame_by_frame, container, false);
 
         // Set ImageView background to frame-by-frame animation-list drawable.
         ImageView plane = (ImageView) rootView.findViewById(R.id.plane);

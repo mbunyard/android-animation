@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.deloitte.android_animation" >
+          package="com.mbunyard.android_animation" >
 
     <application
         android:allowBackup="true"
