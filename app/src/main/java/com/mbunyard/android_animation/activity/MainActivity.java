@@ -77,22 +77,22 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         switch(itemPosition) {
             case 0:
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new PropertyAnimationFragment())
+                        .replace(R.id.container, new PropertyAnimationFragment(), PropertyAnimationFragment.TAG)
                         .commit();
                 break;
             case 1:
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new ViewAnimationFragment())
+                        .replace(R.id.container, new ViewAnimationFragment(), ViewAnimationFragment.TAG)
                         .commit();
                 break;
             case 2:
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new LayoutAnimationFragment())
+                        .replace(R.id.container, new LayoutAnimationFragment(), LayoutAnimationFragment.TAG)
                         .commit();
                 break;
             case 3:
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new FrameByFrameAnimationFragment())
+                        .replace(R.id.container, new FrameByFrameAnimationFragment(), FrameByFrameAnimationFragment.TAG)
                         .commit();
                 break;
             default:
@@ -100,30 +100,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         }
         return true;
     }
-
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
 
     // -------------------- Internal API --------------------
 

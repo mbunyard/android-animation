@@ -2,7 +2,6 @@ package com.mbunyard.android_animation.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,9 @@ import android.widget.ImageView;
 
 import com.mbunyard.android_animation.R;
 
-public class PropertyAnimationFragment extends Fragment {
+public class PropertyAnimationFragment extends BaseFragment {
+
+    public static final String TAG = PropertyAnimationFragment.class.getSimpleName();
 
     public PropertyAnimationFragment() {
     }
@@ -50,4 +51,10 @@ public class PropertyAnimationFragment extends Fragment {
 
         return rootView;
     }
+
+    @Override
+    protected String getFragmentTag() {
+        return TAG;
+    }
+
 }

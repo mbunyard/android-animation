@@ -1,6 +1,5 @@
 package com.mbunyard.android_animation.fragment;
 
-import android.app.Fragment;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,9 @@ import android.widget.ImageView;
 
 import com.mbunyard.android_animation.R;
 
-public class FrameByFrameAnimationFragment extends Fragment {
+public class FrameByFrameAnimationFragment extends BaseFragment {
+
+    public static final String TAG = FrameByFrameAnimationFragment.class.getSimpleName();
 
     public FrameByFrameAnimationFragment() {
     }
@@ -30,4 +31,10 @@ public class FrameByFrameAnimationFragment extends Fragment {
 
         return rootView;
     }
+
+    @Override
+    protected String getFragmentTag() {
+        return TAG;
+    }
+
 }

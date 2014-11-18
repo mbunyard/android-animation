@@ -1,6 +1,5 @@
 package com.mbunyard.android_animation.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 
 import com.mbunyard.android_animation.R;
 
-public class ViewAnimationFragment extends Fragment {
+public class ViewAnimationFragment extends BaseFragment {
 
     public static final String TAG = ViewAnimationFragment.class.getSimpleName();
 
@@ -48,6 +47,11 @@ public class ViewAnimationFragment extends Fragment {
         plane.startAnimation(animation);
 
         return rootView;
+    }
+
+    @Override
+    protected String getFragmentTag() {
+        return TAG;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mbunyard.android_animation.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.mbunyard.android_animation.R;
 
-public class LayoutAnimationFragment extends Fragment {
+public class LayoutAnimationFragment extends BaseFragment {
 
     public static final String TAG = LayoutAnimationFragment.class.getSimpleName();
 
@@ -33,6 +32,11 @@ public class LayoutAnimationFragment extends Fragment {
         // android:layoutAnimation="@anim/layout_popin"
 
         return rootView;
+    }
+
+    @Override
+    protected String getFragmentTag() {
+        return TAG;
     }
 
 }
