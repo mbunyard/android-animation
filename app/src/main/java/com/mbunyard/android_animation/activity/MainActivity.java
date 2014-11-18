@@ -3,14 +3,13 @@ package com.mbunyard.android_animation.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
+import com.mbunyard.android_animation.R;
 import com.mbunyard.android_animation.fragment.FrameByFrameAnimationFragment;
 import com.mbunyard.android_animation.fragment.LayoutAnimationFragment;
 import com.mbunyard.android_animation.fragment.PropertyAnimationFragment;
-import com.mbunyard.android_animation.R;
 import com.mbunyard.android_animation.fragment.ViewAnimationFragment;
 
 
@@ -26,7 +25,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "*** onCreate");
         setContentView(R.layout.activity_main);
 
         // Initialize action bar navigation.
@@ -42,28 +40,23 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
 
         // Determine if a previous activity state needs to be restored.
-        if (savedInstanceState == null) {
+        if (savedInstanceState != null) {
+            // Restore last navigation selection.
+            restorePreviousNavSelection(savedInstanceState);
+        } else {
             // Do nothing, as onNavigationItemSelected callback will be invoked and set
             // the first fragment for display.
-            Log.d(TAG, "*** onCreate - savedInstanceState IS NULL");
-        }
-        else {
-            // TODO: restore last navigation selection
-            Log.d(TAG, "*** onCreate - savedInstanceState NOT NULL");
-            restorePreviousNavSelection(savedInstanceState);
         }
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore previous navigation selection.
-        Log.d(TAG, "*** onRestoreInstanceState");
         restorePreviousNavSelection(savedInstanceState);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "*** onSaveInstanceState - " + getActionBar().getSelectedNavigationIndex());
         // Persist the navigation selection.
         outState.putInt(SELECTED_NAVIGATION_ITEM, getActionBar().getSelectedNavigationIndex());
     }
@@ -73,8 +66,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      */
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        Log.d(TAG, "*** onNavigationItemSelected - " + itemPosition);
-        switch(itemPosition) {
+        switch (itemPosition) {
             case 0:
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, new PropertyAnimationFragment(), PropertyAnimationFragment.TAG)
@@ -108,11 +100,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      */
     private void restorePreviousNavSelection(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(SELECTED_NAVIGATION_ITEM)) {
-            Log.d(TAG, "*** restorePreviousNavSelection - " + savedInstanceState.getInt(SELECTED_NAVIGATION_ITEM));
             getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(SELECTED_NAVIGATION_ITEM));
-        }
-        else {
-            Log.d(TAG, "*** restorePreviousNavSelection - does not contain key");
         }
     }
 
