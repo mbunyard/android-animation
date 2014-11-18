@@ -30,9 +30,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         }
 
         // Initialize action bar navigation.
-        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(
-                this, R.array.action_list, android.R.layout.simple_spinner_dropdown_item);
         final ActionBar actionBar = getActionBar();
+        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(
+                actionBar.getThemedContext(),
+                R.array.action_list,
+                android.R.layout.simple_spinner_dropdown_item);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
