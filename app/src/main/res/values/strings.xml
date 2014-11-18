@@ -7,4 +7,18 @@
     <!-- Menu -->
     <string name="action_settings">Settings</string>
 
+    <!-- Action Bar/Navigation -->
+    <array name="action_list">
+        <item>@string/fragment_property</item>
+        <item>@string/fragment_view</item>
+        <item>@string/fragment_layout</item>
+        <item>@string/fragment_frame</item>
+    </array>
+
+    <!-- Activities/Fragments -->
+    <string name="fragment_property">Property Animation</string>
+    <string name="fragment_view">View Animation</string>
+    <string name="fragment_layout">Layout Animation</string>
+    <string name="fragment_frame">Frame-by-Frame Animation</string>
+
 </resources>
