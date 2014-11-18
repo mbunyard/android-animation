@@ -3,7 +3,9 @@ package com.mbunyard.android_animation.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.mbunyard.android_animation.fragment.MainFragment;
+import com.mbunyard.android_animation.fragment.LayoutAnimationFragment;
+import com.mbunyard.android_animation.fragment.PropertyAnimationFragment;
+import com.mbunyard.android_animation.fragment.ViewAnimationFragment;
 import com.mbunyard.android_animation.R;
 
 
@@ -13,9 +15,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // TODO: add action bar spinner menu to switch animation experiences.
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new MainFragment())
+                    .add(R.id.container, new PropertyAnimationFragment())
                     .commit();
         }
     }

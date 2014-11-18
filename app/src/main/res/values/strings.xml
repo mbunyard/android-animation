@@ -2,12 +2,9 @@
 <resources>
 
     <!-- General -->
-    <string name="app_name">Android Animations</string>
+    <string name="app_name">Animation Samples</string>
 
     <!-- Menu -->
     <string name="action_settings">Settings</string>
-
-    <!-- Animations -->
-    <string name="testing">animation testing</string>
 
 </resources>
