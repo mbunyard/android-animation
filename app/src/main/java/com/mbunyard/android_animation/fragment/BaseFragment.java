@@ -35,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar item clicks.
         if (menuItem.getItemId() == R.id.action_refresh) {
-            startActionBarRefreshAnimation(menuItem);
+            //startActionBarRefreshAnimation(menuItem);
             refreshFragment();
             return true;
         }
