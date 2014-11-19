@@ -2,7 +2,6 @@ package com.mbunyard.android_animation.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +23,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
-        Log.d(TAG, "*** onCreateOptionsMenu");
         menuInflater.inflate(R.menu.menu_fragment_base, menu);
     }
 
@@ -40,9 +38,15 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract String getFragmentTag();
 
-    protected void refreshFragment() {
+    // -------------------- Internal API --------------------
+
+    /**
+     * Refreshes fragment to re-run animation(s).
+     */
+    private void refreshFragment() {
         Fragment fragment = getFragmentManager().findFragmentByTag(getFragmentTag());
         if (fragment != null) {
+            // Detach and reattach fragment for refresh effect.
             getFragmentManager().beginTransaction().detach(fragment).attach(fragment).commit();
         }
     }
