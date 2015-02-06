@@ -87,5 +87,6 @@ Because frame-by-frame animations represent animated Drawables, they are stored 
 + [Animation and Graphics](http://developer.android.com/guide/topics/graphics)
 + [Animation Resources (XML)](http://developer.android.com/guide/topics/resources/animation-resource.html)
 + [fillBefore, fillAfter, and fillEnabled] (http://graphics-geek.blogspot.com/2011/08/mysterious-behavior-of-fillbefore.html)
++ [Material Design - Defining Custom Animations] (https://developer.android.com/training/material/animations.html)
 
 Professional Android 4 Application Development - pg. 114-118, 486-494
