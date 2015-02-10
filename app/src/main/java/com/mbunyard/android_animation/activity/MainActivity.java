@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.mbunyard.android_animation.R;
+import com.mbunyard.android_animation.fragment.CollapseExpandAnimationFragment;
 import com.mbunyard.android_animation.fragment.FrameByFrameAnimationFragment;
 import com.mbunyard.android_animation.fragment.LayoutAnimationFragment;
 import com.mbunyard.android_animation.fragment.PropertyAnimationFragment;
@@ -85,6 +86,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             case 3:
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container, new FrameByFrameAnimationFragment(), FrameByFrameAnimationFragment.TAG)
+                        .commit();
+                break;
+            case 4:
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new CollapseExpandAnimationFragment(), CollapseExpandAnimationFragment.TAG)
                         .commit();
                 break;
             default:

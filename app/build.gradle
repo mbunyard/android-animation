@@ -20,5 +20,10 @@ android {
 }
 
 dependencies {
+    // Internal library JARs within project
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Jake Wharton's Butterknife Library
+    // http://jakewharton.github.io/butterknife/
+    compile 'com.jakewharton:butterknife:6.1.0'
 }

@@ -14,6 +14,7 @@
         <item>@string/fragment_view</item>
         <item>@string/fragment_layout</item>
         <item>@string/fragment_frame</item>
+        <item>@string/fragment_collapse_expand</item>
     </array>
 
     <!-- Activities/Fragments -->
@@ -21,5 +22,6 @@
     <string name="fragment_view">View Animation</string>
     <string name="fragment_layout">Layout Animation</string>
     <string name="fragment_frame">Frame-by-Frame Animation</string>
+    <string name="fragment_collapse_expand">Collapse &amp; Expand Animation</string>
 
 </resources>
