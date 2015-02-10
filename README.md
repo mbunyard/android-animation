@@ -65,6 +65,14 @@ Property animators are extremely useful and used extensively for animating Fragm
 
 The simplest technique for creating property animations is using an
 [ObjectAnimator](http://developer.android.com/reference/android/animation/ObjectAnimator.html).
+[example] (http://developer.android.com/guide/topics/graphics/prop-animation.html#view-prop-animator)
+
+If a getter and setter are not available for the desired property (height, width, weight, etc.),
+a [ValueAnimator] (http://developer.android.com/reference/android/animation/ValueAnimator.html)
+is the preferred method of property animation. [example](http://stackoverflow.com/a/16355027)
+
+To group and choreograph property animations, use an
+[AnimatorSet](http://developer.android.com/reference/android/animation/AnimatorSet.html).
 
 ## [View Animations](http://developer.android.com/guide/topics/graphics/view-animation.html) ##
 Tweened animations that can be applied to rotate, move, and stretch a View.
@@ -74,7 +82,7 @@ Each view animation is stored in the **res/anim** directory within the project.
 An animation can be defined for changes in alpha (fading), scale (scaling), translate (movement),
 or rotate (rotation).
 
-Yuo can create a combination of animations using the **set** tag/element.
+You can create a combination of animations using the **set** tag/element.
 
 ## [Frame/Drawable Animations](http://developer.android.com/guide/topics/graphics/drawable-animation.html) ##
 Frame-by-frame "cell" animations used to display a sequence of Drawable images.
