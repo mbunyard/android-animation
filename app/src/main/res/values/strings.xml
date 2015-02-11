@@ -24,4 +24,9 @@
     <string name="fragment_frame">Frame-by-Frame Animation</string>
     <string name="fragment_collapse_expand">Collapse &amp; Expand Animation</string>
 
+    <!-- Collapse, Expand, and Scale Animation -->
+    <string name="top_label">Click</string>
+    <string name="denver_airport_code">DEN</string>
+    <string name="dublin_airport_code">DUB</string>
+
 </resources>

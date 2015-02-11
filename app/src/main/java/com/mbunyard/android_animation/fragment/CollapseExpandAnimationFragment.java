@@ -1,11 +1,15 @@
 package com.mbunyard.android_animation.fragment;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mbunyard.android_animation.R;
 
@@ -28,6 +32,16 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
      */
     @InjectView(R.id.container_bottom)
     LinearLayout bottomContainerView;
+
+    /**
+     * Bottom container views.
+     */
+    @InjectView(R.id.flight_from)
+    TextView flightFromView;
+    @InjectView(R.id.flight_to)
+    TextView flightToView;
+    @InjectView(R.id.flight_image)
+    ImageView flightImage;
 
     /**
      * Booleans to track expanded view states.
@@ -56,8 +70,8 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
         return rootView;
     }
 
-    @OnClick({ R.id.container_top, R.id.container_bottom })
-    public void onTopViewClick(View clickedView) {
+    @OnClick({R.id.container_top, R.id.container_bottom})
+    public void onContainerClick() {
         if (isTopContainerExpanded) {
             collapse(topContainerView);
             expand(bottomContainerView);
@@ -79,17 +93,82 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
     private void expand(final LinearLayout containerLayout) {
         float currentViewWeight = ((LinearLayout.LayoutParams) containerLayout.getLayoutParams()).weight;
         animateLinearLayoutWeightValue(containerLayout, currentViewWeight, EXPANDED_WEIGHT);
+
+        // TODO: Reduce any of containerLayout's TextViews text size.
+        //containerLayout.findViewById()
+
+        /*
+        ObjectAnimator textSizeAnimator = ObjectAnimator.ofFloat(
+                flightFromView,
+                "textSize",
+                getResources().getDimension(R.dimen.expanded_text_size),
+                getResources().getDimension(R.dimen.collapsed_text_size)
+        );
+        */
+        ObjectAnimator fromTextSizeAnimator = ObjectAnimator.ofFloat(
+                flightFromView,
+                "textSize",
+                20f,
+                28f
+        );
+        ObjectAnimator toTextSizeAnimator = ObjectAnimator.ofFloat(
+                flightToView,
+                "textSize",
+                20f,
+                28f
+        );
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(fromTextSizeAnimator).with(toTextSizeAnimator);
+        animatorSet.setDuration(ANIMATION_DURATION);
+        animatorSet.start();
     }
 
     private void collapse(final LinearLayout containerLayout) {
         float currentViewWeight = ((LinearLayout.LayoutParams) containerLayout.getLayoutParams()).weight;
         animateLinearLayoutWeightValue(containerLayout, currentViewWeight, COLLAPSED_WEIGHT);
+
+        // TODO: Reduce any of containerLayout's TextViews text size.
+        //containerLayout.findViewById()
+
+        /*
+        ObjectAnimator textSizeAnimator = ObjectAnimator.ofFloat(
+                flightFromView,
+                "textSize",
+                getResources().getDimension(R.dimen.expanded_text_size),
+                getResources().getDimension(R.dimen.collapsed_text_size)
+        );
+        */
+        ObjectAnimator fromTextSizeAnimator = ObjectAnimator.ofFloat(
+                flightFromView,
+                "textSize",
+                28f,
+                20f
+        );
+        ObjectAnimator toTextSizeAnimator = ObjectAnimator.ofFloat(
+                flightToView,
+                "textSize",
+                28f,
+                20f
+        );
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(fromTextSizeAnimator).with(toTextSizeAnimator);
+        animatorSet.setDuration(ANIMATION_DURATION);
+        animatorSet.start();
+
+        // TODO: Queue animations in AnimatorSet
+        /*
+        AnimatorSet set = new AnimatorSet();
+        set.play(textSizeAnimator).with().with()
+        */
     }
 
     /**
      * Animates a LinearLayout's weight/layout_weight value using a ValueAnimator rather than
      * an ObjectAnimator due to LinearLayout class not having getter/setter for weight/layout_weight
      * attribute.
+     *
      * @param viewToAnimate
      * @param startWeight
      * @param endWeight
