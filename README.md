@@ -17,7 +17,7 @@ size, rotation, and opacity that animate the View contents.
 A LayoutAnimation is used to animate ViewGroups, applying a single Animation or AnimationSet to
 each child View in a predetermined sequence.
 
-+ Can create layoutAnimation XML in anim directoy, then add to ViewGroup via layoutAnimation XML attribute or in code
++ Can create layoutAnimation XML in anim directory, then add to ViewGroup via layoutAnimation XML attribute or in code
 + [LayoutAnimationController](http://developer.android.com/reference/android/view/animation/LayoutAnimationController.html)
 + [GridLayoutAnimationController](http://developer.android.com/reference/android/view/animation/GridLayoutAnimationController.html)
 

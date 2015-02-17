@@ -38,8 +38,8 @@
             android:id="@+id/flight_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding"
             android:gravity="center"
-            android:padding="8dp"
             android:text="@string/denver_airport_code"
             android:textColor="@android:color/black"
             android:textSize="@dimen/expanded_text_size"
@@ -49,14 +49,15 @@
             android:id="@+id/flight_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding"
             android:src="@drawable/ic_plane"/>
 
         <TextView
             android:id="@+id/flight_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/image_padding"
             android:gravity="center"
-            android:padding="8dp"
             android:text="@string/dublin_airport_code"
             android:textColor="@android:color/black"
             android:textSize="@dimen/expanded_text_size"

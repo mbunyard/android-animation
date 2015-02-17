@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,19 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
         final float topContainerWeight = ((LinearLayout.LayoutParams) topContainerView.getLayoutParams()).weight;
         isTopContainerExpanded = topContainerWeight > COLLAPSED_WEIGHT;
 
+        // TODO: REMOVE
+        Log.d(TAG, "***** BEFORE Padding - Left: " + flightFromView.getPaddingLeft()
+                        + " | Top: " + flightFromView.getPaddingTop()
+                        + " | Right: " + flightFromView.getPaddingRight()
+                        + " | Bottom: " + flightFromView.getPaddingBottom()
+        );
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flightFromView.getLayoutParams();
+        Log.d(TAG, "***** BEFORE Margin - Left: " + layoutParams.leftMargin
+                        + " | Top: " + layoutParams.topMargin
+                        + " | Right: " + layoutParams.rightMargin
+                        + " | Bottom: " + layoutParams.bottomMargin
+        );
+
         return rootView;
     }
 
@@ -75,10 +89,12 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
         if (isTopContainerExpanded) {
             collapse(topContainerView);
             expand(bottomContainerView);
+            scaleBottomPaneContent(true);
             isTopContainerExpanded = false;
         } else {
             collapse(bottomContainerView);
             expand(topContainerView);
+            scaleBottomPaneContent(false);
             isTopContainerExpanded = true;
         }
     }
@@ -90,38 +106,68 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
 
     // ------------------ Internal API ------------------
 
-    private void expand(final LinearLayout containerLayout) {
-        float currentViewWeight = ((LinearLayout.LayoutParams) containerLayout.getLayoutParams()).weight;
-        animateLinearLayoutWeightValue(containerLayout, currentViewWeight, EXPANDED_WEIGHT);
-
-        // TODO: Reduce any of containerLayout's TextViews text size.
-        //containerLayout.findViewById()
-
-        /*
-        ObjectAnimator textSizeAnimator = ObjectAnimator.ofFloat(
-                flightFromView,
-                "textSize",
-                getResources().getDimension(R.dimen.expanded_text_size),
-                getResources().getDimension(R.dimen.collapsed_text_size)
-        );
-        */
+    private void scaleBottomPaneContent(boolean increaseScale) {
         ObjectAnimator fromTextSizeAnimator = ObjectAnimator.ofFloat(
                 flightFromView,
                 "textSize",
                 20f,
-                28f
+                (increaseScale ? 20f : 30f),
+                (increaseScale ? 30f : 20f)
         );
         ObjectAnimator toTextSizeAnimator = ObjectAnimator.ofFloat(
                 flightToView,
                 "textSize",
                 20f,
-                28f
+                (increaseScale ? 20f : 30f),
+                (increaseScale ? 30f : 20f)
+        );
+        ObjectAnimator imageXAnimator = ObjectAnimator.ofFloat(
+                flightImage,
+                "scaleX",
+                (increaseScale ? 0.66f : 1.0f),
+                (increaseScale ? 1.0f : 0.66f)
+        );
+        ObjectAnimator imageYAnimator = ObjectAnimator.ofFloat(
+                flightImage,
+                "scaleY",
+                (increaseScale ? 0.66f : 1.0f),
+                (increaseScale ? 1.0f : 0.66f)
         );
 
+
+        // Calculate padding/margins adjusted for device density
+        final float densityMultiplier = getResources().getDisplayMetrics().density;
+        int lowValue = Math.round(-4 * densityMultiplier);
+        int highValue = Math.round(4 * densityMultiplier);
+        Log.d(TAG, "***** BEFORE densityMultiplier: " + densityMultiplier + " | lowValue: " + lowValue + " | highValue: " + highValue);
+
+        ValueAnimator imagePaddingAnimator = ValueAnimator.ofInt((increaseScale ? lowValue : highValue), (increaseScale ? highValue : lowValue));
+        imagePaddingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int animatedValue = (int) valueAnimator.getAnimatedValue();
+                Log.d(TAG, "***** animatedValue = " + animatedValue);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flightFromView.getLayoutParams();
+                layoutParams.setMargins(animatedValue, animatedValue, animatedValue, animatedValue);
+                flightFromView.setLayoutParams(layoutParams);
+                flightImage.setLayoutParams(layoutParams);
+                flightToView.setLayoutParams(layoutParams);
+            }
+        });
+
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(fromTextSizeAnimator).with(toTextSizeAnimator);
+        animatorSet.play(fromTextSizeAnimator).with(toTextSizeAnimator).with(imageXAnimator).with(imageYAnimator).with(imagePaddingAnimator);
         animatorSet.setDuration(ANIMATION_DURATION);
         animatorSet.start();
+    }
+
+    private void expand(final LinearLayout containerLayout) {
+        float currentViewWeight = ((LinearLayout.LayoutParams) containerLayout.getLayoutParams()).weight;
+        animateLinearLayoutWeightValue(containerLayout, currentViewWeight, EXPANDED_WEIGHT);
+
+        // TODO: Increase any of containerLayout's TextViews text size.
+        //containerLayout.findViewById()
     }
 
     private void collapse(final LinearLayout containerLayout) {
@@ -131,36 +177,11 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
         // TODO: Reduce any of containerLayout's TextViews text size.
         //containerLayout.findViewById()
 
-        /*
-        ObjectAnimator textSizeAnimator = ObjectAnimator.ofFloat(
-                flightFromView,
-                "textSize",
-                getResources().getDimension(R.dimen.expanded_text_size),
-                getResources().getDimension(R.dimen.collapsed_text_size)
-        );
-        */
-        ObjectAnimator fromTextSizeAnimator = ObjectAnimator.ofFloat(
-                flightFromView,
-                "textSize",
-                28f,
-                20f
-        );
-        ObjectAnimator toTextSizeAnimator = ObjectAnimator.ofFloat(
-                flightToView,
-                "textSize",
-                28f,
-                20f
-        );
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(fromTextSizeAnimator).with(toTextSizeAnimator);
-        animatorSet.setDuration(ANIMATION_DURATION);
-        animatorSet.start();
-
         // TODO: Queue animations in AnimatorSet
         /*
         AnimatorSet set = new AnimatorSet();
         set.play(textSizeAnimator).with().with()
+        set.start();
         */
     }
 
