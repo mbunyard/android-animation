@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Expand, collapse, and scale animation dimensions -->
-    <dimen name="expanded_text_size">30sp</dimen>
-    <dimen name="collapsed_text_size">20sp</dimen>
-    <dimen name="image_padding">4dp</dimen>
+    <dimen name="expanded_text_size">34sp</dimen>
+    <dimen name="collapsed_text_size">22sp</dimen>
+    <dimen name="scaled_image_margin">8dp</dimen>
 </resources>

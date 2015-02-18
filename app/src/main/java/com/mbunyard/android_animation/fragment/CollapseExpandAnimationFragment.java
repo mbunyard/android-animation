@@ -4,10 +4,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,11 +50,15 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
     private boolean isTopContainerExpanded;
 
     /**
-     * Animator/animation constants.
+     * Animation constants.
      */
-    private float EXPANDED_WEIGHT = 0.9f;   // layout_weight view should have at end of expand animation.
-    private float COLLAPSED_WEIGHT = 0.1f;  // layout_weight view should have at end of collapse animation.
-    private long ANIMATION_DURATION = 500;  // duration of the animation in milliseconds.
+    private static final long ANIMATION_DURATION = 500;  // duration of the animation in milliseconds.
+    private static final float EXPANDED_WEIGHT = 0.9f;   // layout_weight view should have at end of expand animation.
+    private static final float COLLAPSED_WEIGHT = 0.1f;  // layout_weight view should have at end of collapse animation.
+    private static final float IMAGE_SCALE_MIN = 0.66f;  // 66% of original scale.
+    private static final float IMAGE_SCALE_MAX = 1.0f;   // 100% of original scale.
+    private static float TEXT_SIZE_MIN;                  // min sp text will be scaled/animated to.
+    private static float TEXT_SIZE_MAX;                  // max sp text will be scaled/animated to.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstancesState) {
@@ -68,18 +72,8 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
         final float topContainerWeight = ((LinearLayout.LayoutParams) topContainerView.getLayoutParams()).weight;
         isTopContainerExpanded = topContainerWeight > COLLAPSED_WEIGHT;
 
-        // TODO: REMOVE
-        Log.d(TAG, "***** BEFORE Padding - Left: " + flightFromView.getPaddingLeft()
-                        + " | Top: " + flightFromView.getPaddingTop()
-                        + " | Right: " + flightFromView.getPaddingRight()
-                        + " | Bottom: " + flightFromView.getPaddingBottom()
-        );
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flightFromView.getLayoutParams();
-        Log.d(TAG, "***** BEFORE Margin - Left: " + layoutParams.leftMargin
-                        + " | Top: " + layoutParams.topMargin
-                        + " | Right: " + layoutParams.rightMargin
-                        + " | Bottom: " + layoutParams.bottomMargin
-        );
+        // Initialize values used in animating views.
+        initAnimationValues();
 
         return rootView;
     }
@@ -106,93 +100,32 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
 
     // ------------------ Internal API ------------------
 
-    private void scaleBottomPaneContent(boolean increaseScale) {
-        ObjectAnimator fromTextSizeAnimator = ObjectAnimator.ofFloat(
-                flightFromView,
-                "textSize",
-                20f,
-                (increaseScale ? 20f : 30f),
-                (increaseScale ? 30f : 20f)
-        );
-        ObjectAnimator toTextSizeAnimator = ObjectAnimator.ofFloat(
-                flightToView,
-                "textSize",
-                20f,
-                (increaseScale ? 20f : 30f),
-                (increaseScale ? 30f : 20f)
-        );
-        ObjectAnimator imageXAnimator = ObjectAnimator.ofFloat(
-                flightImage,
-                "scaleX",
-                (increaseScale ? 0.66f : 1.0f),
-                (increaseScale ? 1.0f : 0.66f)
-        );
-        ObjectAnimator imageYAnimator = ObjectAnimator.ofFloat(
-                flightImage,
-                "scaleY",
-                (increaseScale ? 0.66f : 1.0f),
-                (increaseScale ? 1.0f : 0.66f)
-        );
-
-
-        // Calculate padding/margins adjusted for device density
-        final float densityMultiplier = getResources().getDisplayMetrics().density;
-        int lowValue = Math.round(-4 * densityMultiplier);
-        int highValue = Math.round(4 * densityMultiplier);
-        Log.d(TAG, "***** BEFORE densityMultiplier: " + densityMultiplier + " | lowValue: " + lowValue + " | highValue: " + highValue);
-
-        ValueAnimator imagePaddingAnimator = ValueAnimator.ofInt((increaseScale ? lowValue : highValue), (increaseScale ? highValue : lowValue));
-        imagePaddingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int animatedValue = (int) valueAnimator.getAnimatedValue();
-                Log.d(TAG, "***** animatedValue = " + animatedValue);
-
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) flightFromView.getLayoutParams();
-                layoutParams.setMargins(animatedValue, animatedValue, animatedValue, animatedValue);
-                flightFromView.setLayoutParams(layoutParams);
-                flightImage.setLayoutParams(layoutParams);
-                flightToView.setLayoutParams(layoutParams);
-            }
-        });
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(fromTextSizeAnimator).with(toTextSizeAnimator).with(imageXAnimator).with(imageYAnimator).with(imagePaddingAnimator);
-        animatorSet.setDuration(ANIMATION_DURATION);
-        animatorSet.start();
+    private void initAnimationValues() {
+        float densityMultiplier = getResources().getDisplayMetrics().density;
+        TEXT_SIZE_MIN = getResources().getDimension(R.dimen.collapsed_text_size) / densityMultiplier;
+        TEXT_SIZE_MAX = getResources().getDimension(R.dimen.expanded_text_size) / densityMultiplier;
     }
 
     private void expand(final LinearLayout containerLayout) {
         float currentViewWeight = ((LinearLayout.LayoutParams) containerLayout.getLayoutParams()).weight;
         animateLinearLayoutWeightValue(containerLayout, currentViewWeight, EXPANDED_WEIGHT);
 
-        // TODO: Increase any of containerLayout's TextViews text size.
-        //containerLayout.findViewById()
+        // Could scale each containerLayout child view, allowing contents of container to be defined
+        // in XML layout and remove need for explicit view referencing as done in this example.
     }
 
     private void collapse(final LinearLayout containerLayout) {
         float currentViewWeight = ((LinearLayout.LayoutParams) containerLayout.getLayoutParams()).weight;
         animateLinearLayoutWeightValue(containerLayout, currentViewWeight, COLLAPSED_WEIGHT);
 
-        // TODO: Reduce any of containerLayout's TextViews text size.
-        //containerLayout.findViewById()
-
-        // TODO: Queue animations in AnimatorSet
-        /*
-        AnimatorSet set = new AnimatorSet();
-        set.play(textSizeAnimator).with().with()
-        set.start();
-        */
+        // Could scale each containerLayout child view, allowing contents of container to be defined
+        // in XML layout and remove need for explicit view referencing as done in this example.
     }
 
     /**
      * Animates a LinearLayout's weight/layout_weight value using a ValueAnimator rather than
      * an ObjectAnimator due to LinearLayout class not having getter/setter for weight/layout_weight
      * attribute.
-     *
-     * @param viewToAnimate
-     * @param startWeight
-     * @param endWeight
      */
     private void animateLinearLayoutWeightValue(final LinearLayout viewToAnimate, float startWeight, float endWeight) {
         ValueAnimator expandAnimator = ValueAnimator.ofFloat(startWeight, endWeight);
@@ -212,6 +145,78 @@ public class CollapseExpandAnimationFragment extends BaseFragment {
         });
         expandAnimator.setDuration(ANIMATION_DURATION);
         expandAnimator.start();
+    }
+
+    /**
+     * Rather than programmatically locating child views of the bottom container, this example app
+     * references the specific views to animate/scale.
+     */
+    private void scaleBottomPaneContent(boolean toIncreaseScale) {
+        ObjectAnimator fromTextSizeAnimator = ObjectAnimator.ofFloat(
+                flightFromView,
+                "textSize",
+                (toIncreaseScale ? TEXT_SIZE_MIN : TEXT_SIZE_MAX),
+                (toIncreaseScale ? TEXT_SIZE_MAX : TEXT_SIZE_MIN)
+        );
+        ObjectAnimator toTextSizeAnimator = ObjectAnimator.ofFloat(
+                flightToView,
+                "textSize",
+                (toIncreaseScale ? TEXT_SIZE_MIN : TEXT_SIZE_MAX),
+                (toIncreaseScale ? TEXT_SIZE_MAX : TEXT_SIZE_MIN)
+        );
+        ObjectAnimator imageXAnimator = ObjectAnimator.ofFloat(
+                flightImage,
+                "scaleX",
+                (toIncreaseScale ? IMAGE_SCALE_MIN : IMAGE_SCALE_MAX),
+                (toIncreaseScale ? IMAGE_SCALE_MAX : IMAGE_SCALE_MIN)
+        );
+        ObjectAnimator imageYAnimator = ObjectAnimator.ofFloat(
+                flightImage,
+                "scaleY",
+                (toIncreaseScale ? IMAGE_SCALE_MIN : IMAGE_SCALE_MAX),
+                (toIncreaseScale ? IMAGE_SCALE_MAX : IMAGE_SCALE_MIN)
+        );
+
+        // Note: If obtaining a dimension from a resource file, the dimension value will be
+        //       automatically adjusted for the device's display density. If specifying the
+        //       dimension inline or referring to integer constant, adjust the dimension to
+        //       the device's display density before setting as a view attribute.
+        //
+        //       Example: Calling getResources().getDimension(R.dimen.my_margin) on a
+        //                xxhdpi (3.0) density device, with my_margin set to 8dp in dimens.xml,
+        //                will return 24.
+        //
+        //       To manually adjust an integer for display density, multiply the integer by the
+        //       density, which can be obtained by calling getResources().getDisplayMetrics().density.
+
+        // Define min/max margins values to use in animating image margin decreases/increases.
+        float imageMargin = getResources().getDimension(R.dimen.scaled_image_margin);
+        int marginMin = Math.round(-imageMargin);
+        int marginMax = Math.round(imageMargin);
+
+        // Utilize a Property Animation (in this case a ValueAnimator) to animate image margins changes.
+        // Increase/decrease the margins to keep margin proportionate to text and image size/scale.
+        final MarginLayoutParams layoutParams = (MarginLayoutParams) flightImage.getLayoutParams();
+        ValueAnimator imageMarginAnimator = ValueAnimator.ofInt(
+                (toIncreaseScale ? marginMin : marginMax), (toIncreaseScale ? marginMax : marginMin));
+        imageMarginAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int animatedMargin = (int) valueAnimator.getAnimatedValue();
+                layoutParams.setMargins(animatedMargin, animatedMargin, animatedMargin, animatedMargin);
+                flightImage.setLayoutParams(layoutParams);
+            }
+        });
+
+        // Start/run the set of scaling animations together.
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(fromTextSizeAnimator)
+                .with(toTextSizeAnimator)
+                .with(imageXAnimator)
+                .with(imageYAnimator)
+                .with(imageMarginAnimator);
+        animatorSet.setDuration(ANIMATION_DURATION);
+        animatorSet.start();
     }
 
 }

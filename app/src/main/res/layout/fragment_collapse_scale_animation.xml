@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.1"
-        android:background="@drawable/border_green"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -24,13 +23,18 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
+
     <!-- Bottom container -->
     <LinearLayout
         android:id="@+id/container_bottom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.9"
-        android:background="@drawable/border_red"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -38,7 +42,6 @@
             android:id="@+id/flight_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/image_padding"
             android:gravity="center"
             android:text="@string/denver_airport_code"
             android:textColor="@android:color/black"
@@ -49,14 +52,13 @@
             android:id="@+id/flight_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/image_padding"
+            android:layout_margin="@dimen/scaled_image_margin"
             android:src="@drawable/ic_plane"/>
 
         <TextView
             android:id="@+id/flight_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/image_padding"
             android:gravity="center"
             android:text="@string/dublin_airport_code"
             android:textColor="@android:color/black"
